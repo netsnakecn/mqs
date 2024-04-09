@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imboot.mqs.dao.mapper.ConfigMapper">
+
+    <resultMap type="com.imboot.mqs.entity.Config" id="ConfigResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="value" column="value"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <sql id="selectClip">
+        select id, name, value, status
+        from config
+    </sql>
+
+    <select id="list" parameterType="com.imboot.mqs.vo.ConfigVo" resultMap="ConfigResult">
+        <include refid="selectClip"/>
+        <where>
+            <if test="name != null  and name != ''">
+                and name = #{name}
+            </if>
+            <if test="status > 0 ">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="select" parameterType="Long"
+            resultMap="ConfigResult">
+        <include refid="selectClip"/>
+        WHERE id = #{id}
+    </select>
+    <select id="selectBy" parameterType="String" resultMap="ConfigResult">
+        <include refid="selectClip"/>
+        WHERE name = #{name}
+    </select>
+
+    <insert id="insert" parameterType="com.imboot.mqs.entity.Config">
+        insert into config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,
+            </if>
+            <if test="name != null">name,
+            </if>
+            <if test="value != null">value,
+            </if>
+            <if test="status != null">status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},
+            </if>
+            <if test="name != null">#{name},
+            </if>
+            <if test="value != null">#{value},
+            </if>
+            <if test="status != null">#{status},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.imboot.mqs.entity.Config">
+        update config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name =
+                #{name},
+            </if>
+            <if test="value != null">value =
+                #{value},
+            </if>
+            <if test="status != null">status =
+                #{status},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        DELETE
+        FROM config
+        WHERE id = #{id}
+    </delete>
+
+
+</mapper>
