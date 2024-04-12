@@ -216,7 +216,8 @@ public abstract class AbsServiceV2Impl<T extends BaseEntity, Q extends PagingVo,
         return rs;
     }
 
-    public int updateBy(int expectCount, Q paramMap) {
+    @Override
+    public int updateBy(Q paramMap) {
         throw new BizException(CodeEnum.SYS_EXCEPTION.code, "Invalid access");
     }
 
